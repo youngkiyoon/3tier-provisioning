@@ -54,7 +54,7 @@
     group: public SG       #scurity group이름 입력
     count: 1
     region: "{{ aws_region }}"
-    vpc_subnet_id: "{{ result_subnet_private_a.subnet.id }}"
+    vpc_subnet_id: "{{ result_subnet_private_b.subnet.id }}"
     assign_public_ip: yes
     instance_tags:
      Name: wasserver b
