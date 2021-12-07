@@ -11,5 +11,5 @@
     - role: igw
     - role: route_table
     - role: security_group
-    #- role: ec2
+    - role: ec2
     - role: alb
