@@ -3,7 +3,7 @@
 # target group 생성
 - name: create webserver target group
   elb_target_group:
-    name: webserver_group
+    name: WebserverGroup           #특문사용하면 안됨
     protocol: http
     port: 80
     vpc_id: "{{ result_vpc.vpc.id }}"
@@ -17,7 +17,7 @@
 
 - name: create wasserver target group
   elb_target_group:
-    name: wasserver_group
+    name: WasserverGroup          #특문사용하면 안됨
     protocol: http
     port: 80
     vpc_id: "{{ result_vpc.vpc.id }}"
@@ -47,7 +47,7 @@
           #- CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
         DefaultActions:
           - Type: forward    # forward / redirect / fixed-response /  authenticate-oidc / authenticate-cognito
-            TargetGroupName: webserver_group
+            TargetGroupName: WebserverGroup
     state: present
     
 - name: create wasserver alb
@@ -67,5 +67,5 @@
           #- CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
         DefaultActions:
           - Type: forward    # forward / redirect / fixed-response /  authenticate-oidc / authenticate-cognito
-            TargetGroupName: wasserver_group
+            TargetGroupName: WasserverGroup
     state: present    
