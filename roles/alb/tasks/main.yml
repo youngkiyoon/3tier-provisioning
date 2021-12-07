@@ -1,0 +1,71 @@
+---
+
+# target group 생성
+- name: create webserver target group
+  elb_target_group:
+    name: webserver_group
+    protocol: http
+    port: 80
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    region: "{{ aws_region }}"              #region을 추가한다
+    state: present
+    targets:
+      - Id: "{{ result_webserver_a.instance_ids[0] }}"
+        Port: 80
+      - Id: "{{ result_webserver_b.instance_ids[0] }}"
+        Port: 80
+
+- name: create wasserver target group
+  elb_target_group:
+    name: wasserver_group
+    protocol: http
+    port: 80
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    region: "{{ aws_region }}"              #region을 추가한다
+    state: present
+    targets:
+      - Id: "{{ result_wasserver_a.instance_ids[0] }}"
+        Port: 80
+      - Id: "{{ result_wasserver_b.instance_ids[0] }}"
+        Port: 80        
+
+# alb 생성
+- name: create webserver alb
+  elb_application_lb:
+    name: web_alb
+    region: "{{ aws_region }}"              #region을 추가한다
+    security_groups:
+      - public SG      
+    subnets:
+      - "{{ result_subnet_public_a.subnet.id }}"
+      - "{{ result_subnet_public_b.subnet.id }}"
+    listeners:
+      - Protocol: HTTP 
+        Port: 80
+        #SslPolicy: ELBSecurityPolicy-2015-05     # ssl 인증서를 사용하지 않을것이므로 삭제
+        #Certificates: 
+          #- CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+        DefaultActions:
+          - Type: forward    # forward / redirect / fixed-response /  authenticate-oidc / authenticate-cognito
+            TargetGroupName: webserver_group
+    state: present
+    
+- name: create wasserver alb
+  elb_application_lb:
+    name: was_alb
+    region: "{{ aws_region }}"              #region을 추가한다
+    security_groups:
+      - public SG      
+    subnets:
+      - "{{ result_subnet_private_a.subnet.id }}"
+      - "{{ result_subnet_private_b.subnet.id }}"
+    listeners:
+      - Protocol: HTTP 
+        Port: 80
+        #SslPolicy: ELBSecurityPolicy-2015-05     # ssl 인증서를 사용하지 않을것이므로 삭제
+        #Certificates: 
+          #- CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+        DefaultActions:
+          - Type: forward    # forward / redirect / fixed-response /  authenticate-oidc / authenticate-cognito
+            TargetGroupName: wasserver_group
+    state: present    
