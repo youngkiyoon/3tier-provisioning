@@ -1,15 +1,61 @@
 ---
 
-  - name: create EC2
-    ec2:
-      key_name: "{{ ec2_key_name }}"
-      instance_type: "{{ instance_type }}"
-      image: "{{ instance_image }}"
-      wait: no               #생성완료까지 기다리지 않으므로 no로 변경
-      group: public SG       #scurity group이름 입력
-      count: 1
-      region: "{{ aws_region }}"
-      vpc_subnet_id: "{{ result_subnet.subnet.id }}"
-      assign_public_ip: yes
-      instance_tags:
-       Name: webserver
+- name: create webserver a
+  ec2:
+    key_name: "{{ ec2_key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ instance_image }}"
+    wait: yes               #alb 생성을 위해 완료까지 기다려야 하므로 yes로 변경
+    group: public SG       #scurity group이름 입력
+    count: 1
+    region: "{{ aws_region }}"
+    vpc_subnet_id: "{{ result_subnet_public_a.subnet.id }}"
+    assign_public_ip: yes
+    instance_tags:
+     Name: webserver a
+  register: result_webserver_a     #alb 생성을 위해 추가함
+  
+- name: create webserver b
+  ec2:
+    key_name: "{{ ec2_key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ instance_image }}"
+    wait: yes               #alb 생성을 위해 완료까지 기다려야 하므로 yes로 변경
+    group: public SG       #scurity group이름 입력
+    count: 1
+    region: "{{ aws_region }}"
+    vpc_subnet_id: "{{ result_subnet_public_b.subnet.id }}"
+    assign_public_ip: yes
+    instance_tags:
+     Name: webserver b
+  register: result_webserver_b     #alb 생성을 위해 추가함
+
+- name: create wasserver a
+  ec2:
+    key_name: "{{ ec2_key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ instance_image }}"
+    wait: yes               #alb 생성을 위해 완료까지 기다려야 하므로 yes로 변경
+    group: public SG       #scurity group이름 입력
+    count: 1
+    region: "{{ aws_region }}"
+    vpc_subnet_id: "{{ result_subnet_private_a.subnet.id }}"
+    assign_public_ip: yes
+    instance_tags:
+     Name: wasserver a
+  register: result_wasserver_a     #alb 생성을 위해 추가함
+
+- name: create wasserver b
+  ec2:
+    key_name: "{{ ec2_key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ instance_image }}"
+    wait: yes               #alb 생성을 위해 완료까지 기다려야 하므로 yes로 변경
+    group: public SG       #scurity group이름 입력
+    count: 1
+    region: "{{ aws_region }}"
+    vpc_subnet_id: "{{ result_subnet_private_a.subnet.id }}"
+    assign_public_ip: yes
+    instance_tags:
+     Name: wasserver b
+  register: result_wasserver_a     #alb 생성을 위해 추가함

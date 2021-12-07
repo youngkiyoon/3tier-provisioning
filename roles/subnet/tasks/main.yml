@@ -31,7 +31,7 @@
     az: "{{ aws_region }}a"               #새롭게 추가 
     tags:
       Name: wasserver Subnet a
-  register: result_subnet
+  register: result_subnet_private_a
 
 - name: Create private subnet b
   ec2_vpc_subnet:
@@ -42,4 +42,4 @@
     az: "{{ aws_region }}b"               #새롭게 추가
     tags:
       Name: wasserver Subnet b
-  register: result_subnet
+  register: result_subnet_private_b
