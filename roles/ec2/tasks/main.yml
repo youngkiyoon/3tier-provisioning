@@ -58,4 +58,4 @@
     assign_public_ip: yes
     instance_tags:
      Name: wasserver b
-  register: result_wasserver_a     #alb 생성을 위해 추가함
+  register: result_wasserver_b     #alb 생성을 위해 추가함
