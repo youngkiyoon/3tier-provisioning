@@ -1,5 +1,7 @@
 ---
 
+#name에 특문사용하지 말것
+
 # target group 생성
 - name: create webserver target group
   elb_target_group:
@@ -32,7 +34,7 @@
 # alb 생성
 - name: create webserver alb
   elb_application_lb:
-    name: web_alb
+    name: WebALB                            # _ 사용하면 안됨  
     region: "{{ aws_region }}"              #region을 추가한다
     security_groups:
       - public SG      
@@ -52,7 +54,7 @@
     
 - name: create wasserver alb
   elb_application_lb:
-    name: was_alb
+    name: WasALB                            # _ 사용하면 안됨  
     region: "{{ aws_region }}"              #region을 추가한다
     security_groups:
       - public SG      
@@ -68,4 +70,4 @@
         DefaultActions:
           - Type: forward    # forward / redirect / fixed-response /  authenticate-oidc / authenticate-cognito
             TargetGroupName: WasserverGroup
-    state: present    
+    state: present
