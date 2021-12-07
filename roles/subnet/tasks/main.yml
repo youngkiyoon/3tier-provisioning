@@ -1,0 +1,45 @@
+---
+
+- name: Create public subnet a
+  ec2_vpc_subnet:
+    state: present
+    region: "{{ aws_region }}"            #region은 반드시 추가하자
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    cidr: "{{ subnet_cidr_block_public_a }}"
+    az: "{{ aws_region }}a"               #새롭게 추가
+    tags:
+      Name: webserver Subnet a
+  register: result_subnet_public_a
+   
+- name: Create public subnet b
+  ec2_vpc_subnet:
+    state: present
+    region: "{{ aws_region }}"            #region은 반드시 추가하자
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    cidr: "{{ subnet_cidr_block_public_a }}"
+    az: "{{ aws_region }}b"               #새롭게 추가
+    tags:
+      Name: webserver Subnet b
+  register: result_subnet_public_b
+
+- name: Create private subnet a
+  ec2_vpc_subnet:
+    state: present
+    region: "{{ aws_region }}"            #region은 반드시 추가하자
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    cidr: "{{ subnet_cidr_block_private_a }}"
+    az: "{{ aws_region }}a"               #새롭게 추가 
+    tags:
+      Name: wasserver Subnet a
+  register: result_subnet
+
+- name: Create private subnet b
+  ec2_vpc_subnet:
+    state: present
+    region: "{{ aws_region }}"            #region은 반드시 추가하자
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    cidr: "{{ subnet_cidr_block_private_b }}"
+    az: "{{ aws_region }}b"               #새롭게 추가
+    tags:
+      Name: wasserver Subnet b
+  register: result_subnet

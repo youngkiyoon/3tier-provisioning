@@ -1,0 +1,15 @@
+---
+
+- name: Set up public subnet route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ result_vpc.vpc.id }}"
+    region: "{{ aws_region }}"
+    tags:
+      Name: Public
+    subnets:
+      - "{{ result_subnet_public_a.subnet.id }}"
+      - "{{ result_subnet_public_b.subnet.id }}"      #이중화를 위해 두개의 public subnet을 모두 Routing Table에 등록
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ result_igw.gateway_id }}"
+  register: result_route_table
